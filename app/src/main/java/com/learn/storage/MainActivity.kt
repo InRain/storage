@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         val externalStorageManager = ExternalStorageManager(this)
 
         binding.saveExternal.setOnClickListener {
-            requestPermission()
             externalStorageManager.writeExternal(binding.editTextValue.text.toString())
             binding.editTextValue.text.clear()
         }
@@ -74,43 +73,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.loadFromDb.setOnClickListener {
             binding.editTextValue.setText(recordDao.getById(1).value)
-        }
-    }
-
-    private fun requestPermission() {
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-        ) {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                PERMISSION_REQUEST_CODE
-            )
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(
-                        this,
-                        "You can use external storage to write data",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        this,
-                        "You can not use external storage to write data",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
         }
     }
 
